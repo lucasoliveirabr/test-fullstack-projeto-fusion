@@ -1,15 +1,11 @@
+import React from "react";
 
-import './App.css'
-function App() {
-
-
+const App: React.FC = () => {
   return (
-    <>
-      <main>
-        <span>Bem vindo ao Desafio Fullstack </span>
-          </main>
-    </>
-  )
-}
+    <div>
+      <h1 className="text-red-400 text-4xl sm:text-5xl md:text-6xl font-extrabold">Heróis da Marvel</h1>
+    </div>
+  );
+};
 
-export default App
+export default App;
