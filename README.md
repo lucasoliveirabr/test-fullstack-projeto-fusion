@@ -1,18 +1,21 @@
 <div align="center">
-  <h1>🦸‍♂️ Heróis da Marvel</h1>
+  <h1>Heróis da Marvel</h1>
   <h3>Sistema de gerenciamento de heróis da Marvel</h3>
-  <h6>⚠️ Em fase de desenvolvimento / pré-visualização do Front-End apenas.</h6>
+  <h6>⚠️ Em fase de demonstração.</h6>
   <div>
     <img src="https://img.shields.io/badge/React.JS-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" alt="React.js" />
     <img src="https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
     <img src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
     <img src="https://img.shields.io/badge/TailwindCSS-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
   </div>
+  <br />
+  <img src="https://github.com/user-attachments/assets/c9a69bce-e14f-4f83-a242-3838287a404e" alt="Página inicial" />
+  <img src="https://github.com/user-attachments/assets/0d624c45-fb42-498f-95cb-e313c5c46d17" alt="Página de gerenciamento" />
 </div>
 
 ## <a name="link">🔗 Link de acesso</a>
 
-https://test-fullstack-projeto-fusion.pages.dev/
+https://test-fullstack-projeto-fusion.pages.dev
 
 ## <a name="instalacao-e-execucao">🚀 Instalação e execução</a>
 
