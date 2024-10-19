@@ -1,10 +1,21 @@
 import React from "react";
+import LandingPage from "./pages/LandingPage";
+import DashboardMain from "./pages/DashboardMain";
+import DashboardDemo from "./pages/DashboardDemo";
+
+import { useSessionStore } from "./store/session";
 
 const App: React.FC = () => {
+  const { isAuthenticated, setSession } = useSessionStore();
+
   return (
-    <div>
-      <h1 className="text-red-400 text-4xl sm:text-5xl md:text-6xl font-extrabold">Heróis da Marvel</h1>
-    </div>
+    isAuthenticated === null ? (
+      <LandingPage signIn={() => setSession("true")} demo={() => setSession("demo")} />
+    ) : isAuthenticated === "demo" ? (
+      <DashboardDemo />
+    ) : (
+      <DashboardMain />
+    )
   );
 };
 
