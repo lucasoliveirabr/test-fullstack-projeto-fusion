@@ -32,7 +32,7 @@ Certifique-se de ter os seguintes softwares instalados em sua máquina:
 
 > ```bash
 > git clone https://github.com/lucasoliveirabr/test-fullstack-projeto-fusion.git
-> cd test-fullstack-projeto-fusion
+> cd test-fullstack-projeto-fusion/frontend
 > ```
 
 **Baixe e instale as dependências localmente**
