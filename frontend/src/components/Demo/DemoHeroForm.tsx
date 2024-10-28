@@ -1,7 +1,8 @@
 import React, { useState, FormEvent } from "react";
-import { useHeroListDemoStore } from "../store/heroListDemo";
-
 import Modal from 'react-modal';
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
+import { useHeroListDemoStore } from "../../store/heroListDemo";
 
 type HeroFormProps = {
   modalVisibleProp: boolean,
@@ -14,7 +15,7 @@ type HeroToBeCreated = {
   origin: string;
 }
 
-const HeroForm: React.FC<HeroFormProps> = ({ modalVisibleProp, onClose }) => {
+const DemoHeroForm: React.FC<HeroFormProps> = ({ modalVisibleProp, onClose }) => {
   const { addHero } = useHeroListDemoStore();
 
   const [heroToBeCreated, setHeroToBeCreated] = useState<HeroToBeCreated>({
@@ -78,9 +79,22 @@ const HeroForm: React.FC<HeroFormProps> = ({ modalVisibleProp, onClose }) => {
           <div className="grid gap-4 mb-4 grid-cols-2">
 
             <div className="col-span-2">
-              <label htmlFor="nameCreateHero" className="block mb-2 text-sm font-medium text-white">
-                Nome
-              </label>
+              <Tippy
+                content="O nome precisa incluir uma das seguintes opções: Homem-Aranha, Homem de Ferro, Capitão América, Thor, Hulk, Viúva Negra, Gavião Arqueiro, Pantera Negra, Doutor Estranho, Feiticeira Escarlate, Visão, Falcão, Soldado Invernal, Senhor das Estrelas, Groot, Shang-Chi, Homem-Formiga, Capitã Marvel, Demolidor, Tempestade, Wolverine, Jean Grey, Ciclope, Noturno, Fera, Professor X, Adam Warlock, Deadpool, Surfista Prateado, Valquíria, Mulher-Hulk, Falcão Noturno, Patriota de Ferro, Máquina de Combate, Ms. Marvel, Dominó, Longshot, Wiccano, Hulkling, América Chávez, Sersi, Gilgamesh, Thena, Phastos, Makkari, Ajak, Serpente da Lua."
+                interactive={true}
+                placement="bottom"
+                allowHTML={true}
+              >
+                <div className="flex items-center mb-2 underline hover:no-underline text-white">
+                  <label htmlFor="nameCreateHero" className="block mr-1 text-sm font-medium text-white">
+                    Nome
+                  </label>
+                  <span className="sr-only">Info</span>
+                  <svg className="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                  </svg>
+                </div>
+              </Tippy>
               <input
                 type="text"
                 name="nameCreateHero"
@@ -140,4 +154,4 @@ const HeroForm: React.FC<HeroFormProps> = ({ modalVisibleProp, onClose }) => {
   );
 };
 
-export default HeroForm;
+export default DemoHeroForm;

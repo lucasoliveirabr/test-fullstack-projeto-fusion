@@ -1,7 +1,6 @@
 import React from "react";
 import LandingPage from "./pages/LandingPage";
-import DashboardMain from "./pages/DashboardMain";
-import DashboardDemo from "./pages/DashboardDemo";
+import Dashboard from "./pages/Dashboard";
 
 import { useSessionStore } from "./store/session";
 
@@ -11,10 +10,10 @@ const App: React.FC = () => {
   return (
     isAuthenticated === null ? (
       <LandingPage signIn={() => setSession("true")} demo={() => setSession("demo")} />
-    ) : isAuthenticated === "demo" ? (
-      <DashboardDemo />
+    ) : isAuthenticated === "true" ? (
+      <Dashboard isAuthenticated="true" />
     ) : (
-      <DashboardMain />
+      <Dashboard isAuthenticated="demo" />
     )
   );
 };

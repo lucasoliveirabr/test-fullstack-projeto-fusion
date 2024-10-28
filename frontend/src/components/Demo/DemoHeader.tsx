@@ -1,10 +1,8 @@
 import React, { useState } from "react";
+import DemoHeroForm from "./DemoHeroForm";
+import { useSessionStore } from "../../store/session";
 
-import { useSessionStore } from "../store/session";
-
-import HeroForm from "./HeroForm";
-
-const Header: React.FC = () => {
+const DemoHeader: React.FC = () => {
   const { setSession } = useSessionStore();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
@@ -15,7 +13,7 @@ const Header: React.FC = () => {
 
   return (
     <header className="flex space-x-4 justify-between items-center">
-      <HeroForm modalVisibleProp={modalVisible} onClose={() => setModalVisible(false)} />
+      <DemoHeroForm modalVisibleProp={modalVisible} onClose={() => setModalVisible(false)} />
 
       <h1 className="text-red-400 text-4xl md:text-6xl font-extrabold title-shadow">Heróis da Marvel</h1>
 
@@ -42,4 +40,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default DemoHeader;

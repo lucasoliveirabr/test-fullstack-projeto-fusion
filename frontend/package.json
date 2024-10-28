@@ -1,7 +1,7 @@
 {
-  "name": "test-fullstack-projeto-fusion",
+  "name": "frontend-test-fullstack-projeto-fusion",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.1.5",
+    "@tippyjs/react": "^4.2.6",
     "@types/react-modal": "^3.16.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

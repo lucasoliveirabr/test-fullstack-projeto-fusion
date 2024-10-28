@@ -1,9 +1,8 @@
 import React from "react";
-import { useHeroListDemoStore } from "../store/heroListDemo";
+import HeroItem from "./DemoHeroItem";
+import { useHeroListDemoStore } from "../../store/heroListDemo";
 
-import HeroItem from "./HeroItem";
-
-const HeroList: React.FC = () => {
+const DemoHeroList: React.FC = () => {
   const { heroList, editHero, deleteHero } = useHeroListDemoStore();
 
   return (
@@ -22,4 +21,4 @@ const HeroList: React.FC = () => {
   );
 };
 
-export default HeroList;
+export default DemoHeroList;

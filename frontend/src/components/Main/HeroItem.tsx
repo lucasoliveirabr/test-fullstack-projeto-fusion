@@ -1,23 +1,15 @@
 import React, { useState, FormEvent } from "react";
-import { useHeroListDemoStore } from "../store/heroListDemo";
-import ensureFindMethod from "../utils/ensureFindMethod";
-
-import DeleteHeroModal from "./DeleteHeroModal";
+import DeleteHeroModal from "../Shared/DeleteHeroModal";
+import { mutate } from "swr";
 
 import { PencilSquareIcon } from "@heroicons/react/16/solid";
 import { TrashIcon } from "@heroicons/react/16/solid";
 
-type HeroProps = {
+type HeroItemProps = {
   id: number;
   name: string;
   powersAndAbilities: string;
   origin: string;
-}
-
-type HeroItemProps = {
-  id: number;
-  onEdit: (hero: HeroProps) => void;
-  onDelete: (id: number) => void;
 }
 
 type HeroDataProps = {
@@ -26,15 +18,11 @@ type HeroDataProps = {
   origin: string;
 }
 
-const HeroItem: React.FC<HeroItemProps> = ({ id, onEdit, onDelete }) => {
-  const { heroList } = useHeroListDemoStore();
-
-  const thisHero: HeroProps = ensureFindMethod(heroList.find(hero => hero.id === id));
-
+const HeroItem: React.FC<HeroItemProps> = ({ id, name, powersAndAbilities, origin }) => {
   const [heroData, setHeroData] = useState<HeroDataProps>({
-    name: thisHero.name,
-    powersAndAbilities: thisHero.powersAndAbilities,
-    origin: thisHero.origin
+    name,
+    powersAndAbilities,
+    origin
   });
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -42,28 +30,44 @@ const HeroItem: React.FC<HeroItemProps> = ({ id, onEdit, onDelete }) => {
 
   const handleCancelEdit = (): void => {
     setHeroData({
-      name: thisHero.name,
-      powersAndAbilities: thisHero.powersAndAbilities,
-      origin: thisHero.origin
+      name,
+      powersAndAbilities,
+      origin
     });
     setIsEditing(false);
   };
 
-  const handleSubmitEdit = (event: FormEvent<HTMLFormElement>): void => {
+  const handleSubmitEdit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
 
-    onEdit({
-      id: thisHero.id,
-      name: heroData.name,
-      origin: heroData.origin,
-      powersAndAbilities: heroData.powersAndAbilities,
+    await fetch(`http://localhost:3000/api/heroes/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id,
+        name: heroData.name,
+        powersAndAbilities: heroData.powersAndAbilities,
+        origin: heroData.origin
+      }),
     });
+
+    mutate(`http://localhost:3000/api/heroes`);
 
     setIsEditing(false);
   };
 
-  const handleDelete = (): void => {
-    onDelete(thisHero.id);
+  const handleDelete = async (): Promise<void> => {
+    await fetch(`http://localhost:3000/api/heroes/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    mutate(`http://localhost:3000/api/heroes`);
+
     setModalVisible(false);
   };
 
@@ -123,7 +127,7 @@ const HeroItem: React.FC<HeroItemProps> = ({ id, onEdit, onDelete }) => {
 
           <div className="mb-2 flex justify-between items-center">
             <h5 className="mr-2 text-2xl font-bold tracking-tight text-white text-shadow">
-              {thisHero.name}
+              {name}
             </h5>
             <div className="flex space-x-1">
               <button type="button" onClick={() => setIsEditing(true)} className="bg-transparent hover:bg-gray-600 rounded-lg p-1">
@@ -136,11 +140,11 @@ const HeroItem: React.FC<HeroItemProps> = ({ id, onEdit, onDelete }) => {
           </div>
           <div className="text-gray-400 mb-4">
             <p className="font-bold">Poderes e Habilidades:</p>
-            <p className="break-words">{thisHero.powersAndAbilities}</p>
+            <p className="break-words">{powersAndAbilities}</p>
           </div>
           <div className="text-gray-400">
             <p className="font-bold">Origem:</p>
-            <p className="break-words">{thisHero.origin}</p>
+            <p className="break-words">{origin}</p>
           </div>
         </>
       )}

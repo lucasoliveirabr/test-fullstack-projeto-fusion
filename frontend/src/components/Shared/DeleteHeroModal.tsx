@@ -1,5 +1,4 @@
 import React from "react";
-
 import Modal from 'react-modal';
 
 type DeleteHeroModalProps = {
@@ -28,7 +27,7 @@ const DeleteHeroModal: React.FC<DeleteHeroModalProps> = ({ modalVisibility, setM
             <h3 className="mb-5 text-lg font-normal text-gray-400">
               Tem certeza que deseja deletar esse herói?
             </h3>
-            <button type="button" onClick={onClickContinue} className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center py-2.5 px-10 text-center">
+            <button type="submit" onClick={onClickContinue} className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center py-2.5 px-10 text-center">
               Continuar
             </button>
             <button type="button" onClick={setModalVisibilityToFalse} className="py-2.5 px-11 sm:px-5 sm:ml-3 mt-1 sm:mt-0 text-sm font-medium text-gray-400 focus:outline-none bg-gray-800 rounded-lg border border-gray-600 hover:bg-gray-700 hover:text-white focus:z-10 focus:ring-4 focus:ring-gray-700">
