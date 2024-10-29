@@ -7,6 +7,11 @@
     <img src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
     <img src="https://img.shields.io/badge/TailwindCSS-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
   </div>
+  <div>
+    <img src="https://img.shields.io/badge/nestjs-E0234E?style=for-the-badge&logo=nestjs&logoColor=white" alt="NestJS" />
+    <img src="https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white" alt="Prisma" />
+    <img src="https://img.shields.io/badge/postgresql-4169e1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  </div>
   <br />
   <img src="https://github.com/user-attachments/assets/e2e88636-83da-49cb-aeab-859e6bf9c291" alt="Página inicial" />
   <img src="https://github.com/user-attachments/assets/769a78ac-3367-4746-92b7-bb5127163d9e" alt="Página de gerenciamento" />
