@@ -6,7 +6,7 @@ const DemoHeader: React.FC = () => {
   const { setSession } = useSessionStore();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  const handleRemoveSession = () => {
+  const handleRemoveSession = (): void => {
     localStorage.removeItem("session");
     setSession(null);
   };

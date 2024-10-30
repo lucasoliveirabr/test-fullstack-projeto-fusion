@@ -67,7 +67,7 @@ const HeroItem: React.FC<HeroProps> = ({ id, name, powersAndAbilities, origin })
         const errorMessage = errorData.response || "Erro não identificado.";
 
         setError("root", {
-          message: `Erro ao criar um herói: ${errorMessage}`,
+          message: `Erro ao atualizar o herói: ${errorMessage}`,
         });
       } else {
         setError("root", {
