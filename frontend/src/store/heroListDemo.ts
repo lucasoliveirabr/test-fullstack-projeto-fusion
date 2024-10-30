@@ -1,21 +1,21 @@
 import { create } from "zustand";
 
 type HeroProps = {
-  id: number;
+  id?: number;
   name: string;
   powersAndAbilities: string;
   origin: string;
 }
 
 type HeroStore = {
-  heroList: HeroProps[];
-  addHero: (name: string, powersAndAbilities: string, origin: string) => void;
+  demoHeroList: HeroProps[];
+  addHero: (hero: HeroProps) => void;
   editHero: (hero: HeroProps) => void;
   deleteHero: (id: number) => void;
 }
 
-export const useHeroListDemoStore = create<HeroStore>()((set) => ({
-  heroList: [
+export const useDemoHeroListDemoStore = create<HeroStore>()((set) => ({
+  demoHeroList: [
     {
       id: 1,
       name: "Doutor Estranho",
@@ -53,13 +53,13 @@ export const useHeroListDemoStore = create<HeroStore>()((set) => ({
       origin: "Alberta, Canadá, Terra."
     }
   ],
-  addHero: (name, powersAndAbilities, origin) => set((state) => ({
-    heroList: [...state.heroList, { id: Date.now(), name, powersAndAbilities, origin }]
+  addHero: ({ name, powersAndAbilities, origin }) => set((state) => ({
+    demoHeroList: [...state.demoHeroList, { id: Date.now(), name, powersAndAbilities, origin }]
   })),
   editHero: ({ id, name, powersAndAbilities, origin }) => set((state) => ({
-    heroList: state.heroList.map(hero => hero.id === id ? { ...hero, name, powersAndAbilities, origin } : hero)
+    demoHeroList: state.demoHeroList.map(hero => hero.id === id ? { ...hero, name, powersAndAbilities, origin } : hero)
   })),
   deleteHero: (id) => set((state) => ({
-    heroList: state.heroList.filter(hero => hero.id !== id)
+    demoHeroList: state.demoHeroList.filter(hero => hero.id !== id)
   }))
 }));

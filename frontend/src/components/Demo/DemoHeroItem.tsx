@@ -1,115 +1,139 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, useEffect } from "react";
 import DeleteHeroModal from "../Shared/DeleteHeroModal";
-import { useHeroListDemoStore } from "../../store/heroListDemo";
-import ensureFindMethod from "../../utils/ensureFindMethod";
-
+import { useDemoHeroListDemoStore } from "../../store/heroListDemo";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { PencilSquareIcon } from "@heroicons/react/16/solid";
 import { TrashIcon } from "@heroicons/react/16/solid";
 
 type HeroProps = {
-  id: number;
+  id?: number;
   name: string;
   powersAndAbilities: string;
   origin: string;
 }
 
-type HeroItemProps = {
-  id: number;
-  onEdit: (hero: HeroProps) => void;
-  onDelete: (id: number) => void;
-}
+const allowedHeroes = ['Homem-Aranha', 'Homem de Ferro', 'Capitão América', 'Thor', 'Hulk', 'Viúva Negra', 'Gavião Arqueiro', 'Pantera Negra', 'Doutor Estranho', 'Feiticeira Escarlate', 'Visão', 'Falcão', 'Soldado Invernal', 'Senhor das Estrelas', 'Groot', 'Shang-Chi', 'Homem-Formiga', 'Capitã Marvel', 'Demolidor', 'Tempestade', 'Wolverine', 'Jean Grey', 'Ciclope', 'Noturno', 'Fera', 'Professor X', 'Adam Warlock', 'Deadpool', 'Surfista Prateado', 'Valquíria', 'Mulher-Hulk', 'Falcão Noturno', 'Patriota de Ferro', 'Máquina de Combate', 'Ms. Marvel', 'Dominó', 'Longshot', 'Wiccano', 'Hulkling', 'América Chávez', 'Sersi', 'Gilgamesh', 'Thena', 'Phastos', 'Makkari', 'Ajak', 'Serpente da Lua'];
 
-type HeroDataProps = {
-  name: string;
-  powersAndAbilities: string;
-  origin: string;
-}
+const DemoHeroItem: React.FC<HeroProps> = ({ id, name, powersAndAbilities, origin }) => {
+  const { demoHeroList, editHero, deleteHero } = useDemoHeroListDemoStore();
 
-const DemoHeroItem: React.FC<HeroItemProps> = ({ id, onEdit, onDelete }) => {
-  const { heroList } = useHeroListDemoStore();
-
-  const thisHero: HeroProps = ensureFindMethod(heroList.find(hero => hero.id === id));
-
-  const [heroData, setHeroData] = useState<HeroDataProps>({
-    name: thisHero.name,
-    powersAndAbilities: thisHero.powersAndAbilities,
-    origin: thisHero.origin
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<HeroProps>({
+    defaultValues: {
+      name,
+      powersAndAbilities,
+      origin,
+    }
   });
 
+  const [formResetState, setFormResetState] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (formResetState) {
+      reset({ name, powersAndAbilities, origin });
+      setFormResetState(false);
+    }
+  }, [demoHeroList, formResetState, id, name, origin, powersAndAbilities, reset]);
+
   const handleCancelEdit = (): void => {
-    setHeroData({
-      name: thisHero.name,
-      powersAndAbilities: thisHero.powersAndAbilities,
-      origin: thisHero.origin
-    });
     setIsEditing(false);
+    setFormResetState(true);
   };
 
-  const handleSubmitEdit = (event: FormEvent<HTMLFormElement>): void => {
-    event.preventDefault();
-
-    onEdit({
-      id: thisHero.id,
-      name: heroData.name,
-      origin: heroData.origin,
-      powersAndAbilities: heroData.powersAndAbilities,
+  const onSubmit: SubmitHandler<HeroProps> = ({ name, origin, powersAndAbilities }): void => {
+    editHero({
+      id,
+      name: name.trim(),
+      origin: origin.trim(),
+      powersAndAbilities: powersAndAbilities.trim(),
     });
 
     setIsEditing(false);
   };
 
   const handleDelete = (): void => {
-    onDelete(thisHero.id);
+    deleteHero(id as number);
     setModalVisible(false);
+  };
+
+  const normalizeString = (str: string): string => {
+    return str
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+  };
+
+  const nameIsContainedInAllowedHeroes = (value: string): boolean => {
+    const normalizedValue = normalizeString(value);
+    return allowedHeroes.some(item => normalizedValue.includes(normalizeString(item)));
   };
 
   return (
     <div className="flex flex-col max-w-md p-6 border rounded-lg shadow bg-gray-800 border-gray-700">
       {isEditing ? (
-        <form autoComplete="on" onSubmit={handleSubmitEdit}>
-          <input
-            type="text"
-            name="nameEditHero"
-            id="nameEditHero"
-            required
-            autoComplete="on"
-            value={heroData.name}
-            onChange={(event) => setHeroData({ ...heroData, name: event.target.value })}
-            className="border p-2 mr-2 mb-2 rounded w-full bg-gray-800 text-2xl font-bold tracking-tight text-white text-shadow"
-          />
+        <form autoComplete="on" onSubmit={handleSubmit(onSubmit)}>
+          <div className="grid gap-1">
+            <input
+              {...register("name", {
+                required: "Insira um nome.",
+                maxLength: {
+                  value: 30,
+                  message: "Limite de 30 caracteres atingido.",
+                },
+                validate: (value) => {
+                  if (!nameIsContainedInAllowedHeroes(value)) {
+                    return "O nome precisa incluir uma das opções acima, no ícone de informação.";
+                  }
+                  return true;
+                },
+              })}
+              type="text"
+              id="nameEditHero"
+              autoComplete="on"
+              className={`p-2 mr-2 w-full text-2xl text-white text-shadow font-bold tracking-tight bg-gray-800 rounded-md border border-gray-500 outline-none ${errors.name ? "focus:ring-red-400 focus:border-red-400" : "focus:ring-white focus:border-white"}`}
+            />
+            {errors.name && (<p className="text-sm text-red-400">{errors.name.message}</p>)}
 
-          <label htmlFor="powersAndAbilitiesEditHero" className="text-gray-400 mb-1 font-bold">Poderes e Habilidades:</label>
-          <textarea
-            name="powersAndAbilitiesEditHero"
-            id="powersAndAbilitiesEditHero"
-            value={heroData.powersAndAbilities}
-            required
-            autoComplete="on"
-            onChange={(event) => setHeroData({ ...heroData, powersAndAbilities: event.target.value })}
-            className="border p-2 mb-4 rounded w-full min-h-36 bg-gray-800 text-gray-400"
-          />
+            <label htmlFor="powersAndAbilitiesEditHero" className="mt-1 text-gray-400 font-bold">Poderes e Habilidades:</label>
+            <textarea
+              {...register("powersAndAbilities", {
+                required: "Insira poderes e habilidades.",
+                maxLength: {
+                  value: 750,
+                  message: "Limite de 750 caracteres atingido.",
+                },
+              })}
+              id="powersAndAbilitiesEditHero"
+              autoComplete="on"
+              rows={4}
+              className={`p-2 w-full text-gray-400 bg-gray-800 rounded-md border border-gray-500 outline-none ${errors.name ? "focus:ring-red-400 focus:border-red-400" : "focus:ring-white focus:border-white"}`}
+            />
+            {errors.powersAndAbilities && (<p className="text-sm text-red-400">{errors.powersAndAbilities.message}</p>)}
 
-          <label htmlFor="originEditHero" className="text-gray-400 mb-1 font-bold">Origem:</label>
-          <textarea
-            name="originEditHero"
-            id="originEditHero"
-            value={heroData.origin}
-            required
-            autoComplete="on"
-            onChange={(event) => setHeroData({ ...heroData, origin: event.target.value })}
-            className="border p-2 mb-4 rounded w-full bg-gray-800 text-gray-400"
-          />
+            <label htmlFor="originEditHero" className="mt-1 text-gray-400 font-bold">Origem:</label>
+            <textarea
+              {...register("origin", {
+                required: "Insira uma origem.",
+                maxLength: {
+                  value: 100,
+                  message: "Limite de 100 caracteres atingido.",
+                },
+              })}
+              id="originEditHero"
+              autoComplete="on"
+              className={`p-2 w-full text-gray-400 bg-gray-800 rounded-md border border-gray-500 outline-none ${errors.name ? "focus:ring-red-400 focus:border-red-400" : "focus:ring-white focus:border-white"}`}
+            />
+            {errors.origin && (<p className="text-sm text-red-400">{errors.origin.message}</p>)}
 
-          <div className="flex space-x-1 justify-end">
-            <button type="button" onClick={handleCancelEdit} className="bg-transparent rounded-lg px-4 py-2 text-white">
-              Cancelar
-            </button>
-            <button type="submit" className="bg-red-400 hover:bg-red-500 rounded-lg px-4 py-2 text-white">
-              Salvar
-            </button>
+            <div className="flex space-x-1 justify-end mt-4">
+              <button type="button" onClick={handleCancelEdit} className="bg-transparent rounded-lg px-4 py-2 text-white">
+                Cancelar
+              </button>
+              <button type="submit" className="bg-red-400 hover:bg-red-500 rounded-lg px-4 py-2 text-white">
+                Salvar
+              </button>
+            </div>
           </div>
         </form>
       ) : (
@@ -122,7 +146,7 @@ const DemoHeroItem: React.FC<HeroItemProps> = ({ id, onEdit, onDelete }) => {
 
           <div className="mb-2 flex justify-between items-center">
             <h5 className="mr-2 text-2xl font-bold tracking-tight text-white text-shadow">
-              {thisHero.name}
+              {name}
             </h5>
             <div className="flex space-x-1">
               <button type="button" onClick={() => setIsEditing(true)} className="bg-transparent hover:bg-gray-600 rounded-lg p-1">
@@ -135,11 +159,11 @@ const DemoHeroItem: React.FC<HeroItemProps> = ({ id, onEdit, onDelete }) => {
           </div>
           <div className="text-gray-400 mb-4">
             <p className="font-bold">Poderes e Habilidades:</p>
-            <p className="break-words">{thisHero.powersAndAbilities}</p>
+            <p className="break-words">{powersAndAbilities}</p>
           </div>
           <div className="text-gray-400">
             <p className="font-bold">Origem:</p>
-            <p className="break-words">{thisHero.origin}</p>
+            <p className="break-words">{origin}</p>
           </div>
         </>
       )}

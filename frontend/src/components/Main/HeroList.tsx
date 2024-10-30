@@ -3,7 +3,7 @@ import HeroItem from "./HeroItem";
 import useSWR from "swr";
 
 type HeroDataProps = {
-  id: number;
+  id?: number;
   name: string;
   powersAndAbilities: string;
   origin: string;
@@ -24,7 +24,7 @@ const HeroList: React.FC = () => {
         {data?.map(heroData => (
           <HeroItem
             key={heroData.id}
-            id={heroData.id}
+            id={heroData.id as number}
             name={heroData.name}
             powersAndAbilities={heroData.powersAndAbilities}
             origin={heroData.origin}
