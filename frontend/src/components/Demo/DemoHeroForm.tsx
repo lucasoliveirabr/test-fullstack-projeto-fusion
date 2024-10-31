@@ -4,22 +4,17 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import Modal from 'react-modal';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
+import { Hero } from "../../types";
 
 type HeroFormProps = {
   modalVisibleProp: boolean,
   onClose: () => void,
 }
 
-type HeroToBeCreated = {
-  name: string;
-  powersAndAbilities: string;
-  origin: string;
-}
-
 const allowedHeroes = ['Homem-Aranha', 'Homem de Ferro', 'Capitão América', 'Thor', 'Hulk', 'Viúva Negra', 'Gavião Arqueiro', 'Pantera Negra', 'Doutor Estranho', 'Feiticeira Escarlate', 'Visão', 'Falcão', 'Soldado Invernal', 'Senhor das Estrelas', 'Groot', 'Shang-Chi', 'Homem-Formiga', 'Capitã Marvel', 'Demolidor', 'Tempestade', 'Wolverine', 'Jean Grey', 'Ciclope', 'Noturno', 'Fera', 'Professor X', 'Adam Warlock', 'Deadpool', 'Surfista Prateado', 'Valquíria', 'Mulher-Hulk', 'Falcão Noturno', 'Patriota de Ferro', 'Máquina de Combate', 'Ms. Marvel', 'Dominó', 'Longshot', 'Wiccano', 'Hulkling', 'América Chávez', 'Sersi', 'Gilgamesh', 'Thena', 'Phastos', 'Makkari', 'Ajak', 'Serpente da Lua'];
 
 const DemoHeroForm: React.FC<HeroFormProps> = ({ modalVisibleProp, onClose }) => {
-  const { register, handleSubmit, reset, formState: { errors, isSubmitSuccessful } } = useForm<HeroToBeCreated>();
+  const { register, handleSubmit, reset, formState: { errors, isSubmitSuccessful } } = useForm<Hero>();
 
   const { addHero } = useDemoHeroListDemoStore();
 
@@ -27,7 +22,7 @@ const DemoHeroForm: React.FC<HeroFormProps> = ({ modalVisibleProp, onClose }) =>
     reset();
   }, [isSubmitSuccessful, reset]);
 
-  const onSubmit: SubmitHandler<HeroToBeCreated> = ({ name, powersAndAbilities, origin }): void => {    
+  const onSubmit: SubmitHandler<Hero> = ({ name, powersAndAbilities, origin }): void => {    
     addHero({
       name: name.trim(),
       powersAndAbilities: powersAndAbilities.trim(),

@@ -1,16 +1,10 @@
 import { create } from "zustand";
-
-type HeroProps = {
-  id?: number;
-  name: string;
-  powersAndAbilities: string;
-  origin: string;
-}
+import { Hero } from "../types";
 
 type HeroStore = {
-  demoHeroList: HeroProps[];
-  addHero: (hero: HeroProps) => void;
-  editHero: (hero: HeroProps) => void;
+  demoHeroList: Hero[];
+  addHero: (hero: Hero) => void;
+  editHero: (hero: Hero) => void;
   deleteHero: (id: number) => void;
 }
 

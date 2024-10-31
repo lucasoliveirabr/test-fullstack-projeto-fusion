@@ -2,19 +2,13 @@ import React from "react";
 import HeroItem from "./HeroItem";
 import LoadingSkeletonForm from "./LoadingSkeletonForm";
 import useSWR from "swr";
-
-type HeroDataProps = {
-  id?: number;
-  name: string;
-  powersAndAbilities: string;
-  origin: string;
-}
+import { Hero } from "../../types";
 
 const url: string = "http://localhost:3000/api/heroes";
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 const HeroList: React.FC = () => {
-  const { data, error, isLoading } = useSWR<HeroDataProps[], Error>(url, fetcher);
+  const { data, error, isLoading } = useSWR<Hero[], Error>(url, fetcher);
 
   if (isLoading) return (
     <main className="flex justify-center mt-10">

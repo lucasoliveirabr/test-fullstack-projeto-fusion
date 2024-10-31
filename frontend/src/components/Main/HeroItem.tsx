@@ -4,18 +4,12 @@ import { mutate } from "swr";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { PencilSquareIcon } from "@heroicons/react/16/solid";
 import { TrashIcon } from "@heroicons/react/16/solid";
-
-type HeroProps = {
-  id?: number;
-  name: string;
-  powersAndAbilities: string;
-  origin: string;
-}
+import { Hero } from "../../types";
 
 const allowedHeroes = ['Homem-Aranha', 'Homem de Ferro', 'Capitão América', 'Thor', 'Hulk', 'Viúva Negra', 'Gavião Arqueiro', 'Pantera Negra', 'Doutor Estranho', 'Feiticeira Escarlate', 'Visão', 'Falcão', 'Soldado Invernal', 'Senhor das Estrelas', 'Groot', 'Shang-Chi', 'Homem-Formiga', 'Capitã Marvel', 'Demolidor', 'Tempestade', 'Wolverine', 'Jean Grey', 'Ciclope', 'Noturno', 'Fera', 'Professor X', 'Adam Warlock', 'Deadpool', 'Surfista Prateado', 'Valquíria', 'Mulher-Hulk', 'Falcão Noturno', 'Patriota de Ferro', 'Máquina de Combate', 'Ms. Marvel', 'Dominó', 'Longshot', 'Wiccano', 'Hulkling', 'América Chávez', 'Sersi', 'Gilgamesh', 'Thena', 'Phastos', 'Makkari', 'Ajak', 'Serpente da Lua'];
 
-const HeroItem: React.FC<HeroProps> = ({ id, name, powersAndAbilities, origin }) => {
-  const { register, handleSubmit, reset, setError, formState: { errors } } = useForm<HeroProps>({
+const HeroItem: React.FC<Hero> = ({ id, name, powersAndAbilities, origin }) => {
+  const { register, handleSubmit, reset, setError, formState: { errors } } = useForm<Hero>({
     defaultValues: {
       name,
       powersAndAbilities,
@@ -39,7 +33,7 @@ const HeroItem: React.FC<HeroProps> = ({ id, name, powersAndAbilities, origin })
     setFormResetState(true);
   };
 
-  const onSubmit: SubmitHandler<HeroProps> = async ({ name, origin, powersAndAbilities }): Promise<void> => {
+  const onSubmit: SubmitHandler<Hero> = async ({ name, origin, powersAndAbilities }): Promise<void> => {
     try {
       await fetch(`http://localhost:3000/api/heroes/${id}`, {
         method: 'PUT',
