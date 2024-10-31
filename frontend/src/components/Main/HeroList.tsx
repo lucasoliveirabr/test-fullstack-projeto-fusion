@@ -4,7 +4,9 @@ import LoadingSkeletonForm from "./LoadingSkeletonForm";
 import useSWR from "swr";
 import { Hero } from "../../types";
 
-const url: string = "http://localhost:3000/api/heroes";
+const url: string = import.meta.env.MODE === "production"
+  ? import.meta.env.VITE_API_URL_PROD
+  : import.meta.env.VITE_API_URL_DEV;
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 const HeroList: React.FC = () => {

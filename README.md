@@ -50,10 +50,11 @@ Certifique-se de ter os seguintes softwares instalados em sua máquina:
 > npm install
 > ```
 
-**Crie um arquivo .env e insira o texto abaixo**
+**Crie um arquivo .env com as seguintes variáveis**
 
 > ```bash
 > DATABASE_URL="SUA_STRING_DE_CONEXAO"
+> NODE_ENV="development" # ou production
 > ```
 
 **Crie a conexão do Prisma com o banco de dados**
@@ -80,6 +81,13 @@ Certifique-se de ter os seguintes softwares instalados em sua máquina:
 > ```bash
 > cd frontend
 > npm install
+> ```
+
+**Crie um arquivo .env com as seguintes variáveis**
+
+> ```bash
+> VITE_API_URL_PROD="SUA_STRING_DE_CONEXAO/api/heroes"
+> VITE_API_URL_DEV="http://localhost:3000/api/heroes"
 > ```
 
 **Execute o projeto**

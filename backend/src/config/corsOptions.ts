@@ -6,14 +6,13 @@ type CorsOptions = {
   optionsSuccessStatus: number;
 };
 
-const allowedOrigin: string[] = [
-  'http://localhost:5173',
-  'https://test-fullstack-projeto-fusion.pages.dev',
-];
+const allowedOrigin = process.env.NODE_ENV === 'production'
+  ? 'https://test-fullstack-projeto-fusion.pages.dev'
+  : 'http://localhost:5173';
 
 const corsOptions: CorsOptions = {
   origin: (origin, callback) => {
-    if (allowedOrigin.indexOf(origin) !== -1 || !origin) {
+    if (origin === allowedOrigin) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));

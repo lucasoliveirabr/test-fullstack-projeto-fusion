@@ -35,7 +35,11 @@ const HeroItem: React.FC<Hero> = ({ id, name, powersAndAbilities, origin }) => {
 
   const onSubmit: SubmitHandler<Hero> = async ({ name, origin, powersAndAbilities }): Promise<void> => {
     try {
-      await fetch(`http://localhost:3000/api/heroes/${id}`, {
+      const url: string = import.meta.env.MODE === "production"
+        ? import.meta.env.VITE_API_URL_PROD
+        : import.meta.env.VITE_API_URL_DEV;
+
+      await fetch(`${url}/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +56,7 @@ const HeroItem: React.FC<Hero> = ({ id, name, powersAndAbilities, origin }) => {
         }
       });
 
-      mutate(`http://localhost:3000/api/heroes`);
+      mutate(url);
 
       setIsEditing(false);
     } catch (error) {
@@ -72,14 +76,18 @@ const HeroItem: React.FC<Hero> = ({ id, name, powersAndAbilities, origin }) => {
   };
 
   const handleDelete = async (): Promise<void> => {
-    await fetch(`http://localhost:3000/api/heroes/${id}`, {
+    const url: string = import.meta.env.MODE === "production"
+      ? import.meta.env.VITE_API_URL_PROD
+      : import.meta.env.VITE_API_URL_DEV;
+
+    await fetch(`${url}/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       }
     });
 
-    mutate(`http://localhost:3000/api/heroes`);
+    mutate(url);
 
     setModalVisible(false);
   };

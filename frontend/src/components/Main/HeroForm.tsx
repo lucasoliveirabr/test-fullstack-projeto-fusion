@@ -23,7 +23,11 @@ const HeroForm: React.FC<HeroFormProps> = ({ modalVisibleProp, onClose }) => {
 
   const onSubmit: SubmitHandler<Hero> = async ({ name, powersAndAbilities, origin }): Promise<void> => {
     try {
-      await fetch(`http://localhost:3000/api/heroes`, {
+      const url: string = import.meta.env.MODE === "production"
+        ? import.meta.env.VITE_API_URL_PROD
+        : import.meta.env.VITE_API_URL_DEV;
+
+      await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -40,7 +44,7 @@ const HeroForm: React.FC<HeroFormProps> = ({ modalVisibleProp, onClose }) => {
         }
       });
 
-      mutate(`http://localhost:3000/api/heroes`);
+      mutate(url);
 
       onClose();
     } catch (error) {
